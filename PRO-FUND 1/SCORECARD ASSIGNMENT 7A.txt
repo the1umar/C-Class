@@ -1,0 +1,109 @@
+OUTPUT RESULT:
+Mirabella Jones results: 
+7.5, 8.8, 7.0, 8.1, 8.0, 9.8, 9.3, 8.9, 9.1, 9.0
+The highest score of 9.8 and the lowest score of 7.0 were dropped
+The average score is 8.59
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+SOURCE CODE:
+// COMPETITION ASSIGNMENT
+// AFOLAMI KOREDE UMAR
+// SECTION 902
+// 4/16/2023
+
+#include <iostream>
+#include <iomanip>
+#include <fstream>
+using namespace std;
+
+int main() {
+    // List of named constants
+    const int SCORE_COUNT = 10;
+    const int PRECISION = 2;
+    const double SCORE_MIN = 0.0;
+    const double SCORE_MAX = 10.0;
+    const string SCORECARD = "scorecard.txt";
+    
+    // Create an array to hold the scores from the judges
+    double scores[SCORE_COUNT];
+    
+    // Open a file with the scores
+    ifstream scoresFile;
+    scoresFile.open(SCORECARD);
+    
+    // Check if the file opens successfully
+    if (!scoresFile) {
+        cout << "ERROR: the scorecard could not be opened" << endl;
+    } else {
+        bool error = false;
+        
+        // Read the athlete's name from the file
+        string name;
+        getline(scoresFile, name);
+        
+        // Read the scores from the file while testing for insufficient and invalid scores
+        for (int count = 0; count < SCORE_COUNT; count++) {
+            if (!(scoresFile >> scores[count])) {
+                cout << "Insufficient scores" << endl 
+                << name << "is disqualified";
+                error = true;
+                break;
+            }
+            if (scores[count] < SCORE_MIN || scores[count] > SCORE_MAX) {
+                cout << "Invalid scores " << endl 
+                << name << "is disqualified";
+                error = true;
+                break;
+            }
+        }
+        // Close the file
+        scoresFile.close();
+    
+        // If there are no Insufficient or invalid scores proceed     
+        if (!error) {
+            
+            cout << fixed << showpoint << setprecision(1);
+            cout << name << "results: " << endl;
+            for (int count = 0; count < SCORE_COUNT; count++) {
+                cout << scores[count];
+                if (count < SCORE_COUNT - 1) {
+                    cout << ", ";
+                }
+            }  
+            cout << endl;
+            
+            // Get the highest and lowest score in the array 
+            int maxIdx = 0;
+            int minIdx = 0;
+            for (int count = 1; count < SCORE_COUNT; ++count) {
+                    if (scores[count] > scores[maxIdx]) {
+                       maxIdx = count;
+                    }
+                    if (scores[count] < scores[minIdx]) {
+                       minIdx = count;
+                    }
+                }
+            // Output the message saying the highest and lowest scores dropped
+            cout << "The highest score of " << scores[maxIdx] << 
+            " and the lowest score of " << scores[minIdx] << " were dropped" << endl;
+
+            // Calculate the average with the remaining scores
+            double total = 0;
+            int validScoreCount = 0;
+            for (int count = 0; count < SCORE_COUNT; ++count) {
+                if (scores[count] != scores[maxIdx] && scores[count] != scores[minIdx]) {
+                    total += scores[count];
+                    validScoreCount++;
+                }
+            }
+            double average = total / (validScoreCount);
+            cout << fixed << showpoint << setprecision(PRECISION);
+            cout << "The average score is " << average;
+        } 
+    }
+    return 0;
+}

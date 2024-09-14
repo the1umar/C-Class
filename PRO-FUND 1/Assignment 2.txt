@@ -1,0 +1,35 @@
+TWESTING RESULTS:
+TESTING RESULTS:
+Hello, please input the temperature you would like to convert
+62
+62 degrees Farenheit = 16.6667 degrees Celcius
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+
+SOURCE CODE:
+// CONVERSION OF FARENHEIT TO CELCIUS
+// Author: Afolami Korede Umar
+// Section:002
+// Date: 1/27/2023
+
+#include <iostream>
+using namespace std;
+
+int main() {
+    // First I outputed my prompt to the user
+    cout << "Hello, please input the temperature you would like to convert" << endl;
+    
+    // Next I created my farenheit and celcius variables
+    double farenheit;
+    cin >> farenheit;
+    const double CELCIUS = (farenheit - 32) * 5/9;
+    
+    // Next I created an expression that converts Farenheit to Celcius
+    cout << farenheit << " degrees Farenheit = " << CELCIUS << " degrees Celcius";
+
+    return 0;
+}

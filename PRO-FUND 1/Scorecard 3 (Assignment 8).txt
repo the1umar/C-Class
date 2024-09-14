@@ -1,0 +1,268 @@
+OUTPUT 1:
+Enter the filename of the scorecard: scorecard1.txt
+Athlete: Mirabella Jones
+All scores: 7.5 8.8 7 8.1 8 9.8 9.3 8.9 9.1 9 
+The lowest score of 7.00, and the highest score of 9.80 were dropped
+Average score: 8.59
+
+Athlete: Ruth Mendez
+All scores: 9.80 8.50 6.00 8.80 8.60 7.10 7.80 8.00 7.20 8.30 
+The lowest score of 6.00, and the highest score of 9.80 were dropped
+Average score: 8.04
+
+Athlete: Melvin Ingram
+All scores: 9.90 7.30 6.30 7.00 6.80 6.20 8.90 9.50 6.50 6.00 
+The lowest score of 6.00, and the highest score of 9.90 were dropped
+Average score: 7.31
+
+Athlete: Tara Silva
+All scores: 8.10 7.10 9.40 7.20 9.20 6.40 9.50 8.40 6.70 6.60 
+The lowest score of 6.40, and the highest score of 9.50 were dropped
+Average score: 7.84
+
+Athlete: Joann Gardner
+All scores: 6.90 8.00 8.70 8.90 9.10 7.50 8.20 6.30 8.40 6.20 
+The lowest score of 6.20, and the highest score of 9.10 were dropped
+Average score: 7.86
+
+Athlete: Jeff Barnes
+All scores: 6.40 7.20 8.30 8.60 7.90 6.00 7.10 6.70 9.50 9.90 
+The lowest score of 6.00, and the highest score of 9.90 were dropped
+Average score: 7.71
+
+Athlete: Lucille Dixon
+All scores: 9.50 6.50 9.30 9.40 8.50 8.70 6.20 9.70 8.70 8.20 
+The lowest score of 6.20, and the highest score of 9.70 were dropped
+Average score: 8.60
+
+Athlete: Krista James
+All scores: 8.40 9.40 8.10 6.30 6.10 8.60 9.60 9.10 9.90 8.80 
+The lowest score of 6.10, and the highest score of 9.90 were dropped
+Average score: 8.54
+
+Athlete: Naomi Sanders
+All scores: 7.00 7.20 8.70 9.10 9.60 6.60 9.40 9.80 8.40 7.60 
+The lowest score of 6.60, and the highest score of 9.80 were dropped
+Average score: 8.38
+
+Athlete: Ricky McCarthy
+All scores: 9.80 7.20 9.00 8.50 6.20 6.50 9.10 8.40 8.10 8.70 
+The lowest score of 6.20, and the highest score of 9.80 were dropped
+Average score: 8.19
+
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+OUTPUT 2:
+Enter the filename of the scorecard: scorecard2.txt
+Athlete: Mirabella Jones
+All scores: 7.5 8.8 7 8.1 8 9.8 9.3 8.9 9.1 9 
+The lowest score of 7.00, and the highest score of 9.80 were dropped
+Average score: 8.59
+
+Athlete: Ruth Mendez
+All scores: 9.80 8.50 6.00 8.80 8.60 7.10 7.80 8.00 7.20 8.30 
+The lowest score of 6.00, and the highest score of 9.80 were dropped
+Average score: 8.04
+
+Athlete: Melvin Ingram
+Disqualified: Score out of range
+
+Athlete: Tara Silva
+All scores: 8.10 7.10 9.40 7.20 9.20 6.40 9.50 8.40 6.70 6.60 
+The lowest score of 6.40, and the highest score of 9.50 were dropped
+Average score: 7.84
+
+Athlete: Joann Gardner
+Disqualified: Score out of range
+
+Athlete: Jeff Barnes
+All scores: 6.40 7.20 8.30 8.60 7.90 6.00 7.10 6.70 9.50 9.90 
+The lowest score of 6.00, and the highest score of 9.90 were dropped
+Average score: 7.71
+
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+SOURCE CODE:
+// SCORECARD ASSIGNMENT 3
+// AFOLAMI KOREDE UMAR
+// SECTION 902
+// 4/22/2023
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+
+using namespace std;
+
+// Global constants
+const int MAX_ATHLETES = 10;
+const int NUM_SCORES = 10;
+const int PRECISION = 2;
+
+// Function prototypes
+int readScorecard(string filename, string names[], string errors[], double scores[][NUM_SCORES]);
+double computeAverage(double scores[]);
+void selectionSort(string arr[], int idx[], int size, bool ascending = true);
+void swapInt(int &a, int &b);
+
+
+int main() {
+    string filename;
+    string names[MAX_ATHLETES];
+    string errors[MAX_ATHLETES];
+    double scores[MAX_ATHLETES][NUM_SCORES];
+    
+    int numAthletes = 0;
+
+    // Ask user for filename
+    cout << "Enter the filename of the scorecard: ";
+    cin >> filename;
+
+    // Read scorecard and get number of athletes
+    numAthletes = readScorecard(filename, names, errors, scores);
+
+    // Display results for each athlete
+    for (int i = 0; i < numAthletes; i++) {
+        // Display athlete's name
+        cout << "Athlete: " << names[i] << endl;
+
+        // Check for errors
+        if (errors[i] != "") {
+            cout << "Disqualified: " << errors[i] << endl;
+        }
+        else {
+            // Compute average score and display it
+            double average = computeAverage(scores[i]);
+            cout << "Average score: " << fixed << setprecision(PRECISION) << average << endl;
+        }
+        // Add spacing between athletes
+        cout << endl;
+    }
+    
+    int *name_indices = new int[numAthletes];
+    for (int i = 0; i < numAthletes; i++)
+        name_indices[i] = i;
+    selectionSort(names, name_indices, numAthletes);
+
+    return 0;
+}
+
+// Function to read scorecard
+int readScorecard(string filename, string names[], string errors[], double scores[][NUM_SCORES]) {
+    int numAthletes = 0;
+    ifstream fin(filename);
+    // If reading from file fails, print error and return false opening
+    if (!fin) {
+        cout << "Error opening file." << endl;
+        return 0;
+    }
+
+    while (numAthletes < MAX_ATHLETES && fin) {
+        getline(fin, names[numAthletes]);
+        // Read scores from file
+        for (int i = 0; i < NUM_SCORES; i++) {
+            fin >> scores[numAthletes][i];
+            // Set acceptable range
+            if (scores[numAthletes][i] < 0 || scores[numAthletes][i] > 10) {
+                errors[numAthletes] = "Score out of range";
+            }
+        }
+
+        // Ignore end line character
+        fin.ignore();
+
+        // Increment numAthletes
+        numAthletes++;
+    }
+
+    fin.close();
+    return numAthletes;
+}
+
+// Function to compute average score for one athlete
+double computeAverage(double scores[]) {
+    double sum = 0;
+    double lowest = scores[0];
+    double highest = scores[0];
+
+    // Find lowest and highest scores
+    for (int i = 0; i < NUM_SCORES; i++) {
+        sum += scores[i];
+
+        if (scores[i] < lowest) {
+            lowest = scores[i];
+        }
+        if (scores[i] > highest) {
+            highest = scores[i];
+        }
+    }
+
+    // Compute average score
+    double average = (sum - lowest - highest) / (NUM_SCORES - 2);
+
+    // Display all scores and the two dropped scores
+    cout << "All scores: ";
+    for (int i = 0; i < NUM_SCORES; i++) {
+        cout << scores[i] << " ";
+    }
+    cout << endl;
+    
+    cout << fixed << setprecision(PRECISION);
+    cout << "The lowest score of " << lowest << ", and the highest score of " << highest << " were dropped" << endl;
+
+    return average;
+}  
+
+// Function to swap two integer values
+void swapInt(int &a, int &b) {
+    int placeholder = a;
+    a = b;
+    b = placeholder;
+}
+
+void selectionSort(double arr[], int idx[], int size, bool ascending) {
+    for (int i = 0; i < size-1; i++) {
+        int minIdx = i;
+        for (int j = 1; j < size; j++) {
+            if (ascending) {
+                if (arr[idx[j]] < arr[idx[minIdx]])
+                    minIdx = j;
+            }
+            else {
+                if (arr[idx[j]] > arr[idx[minIdx]]) {
+                    minIdx = j;
+                }    
+            }
+        }
+        swapInt(idx[i], idx[minIdx]);
+    }
+}
+
+// Overloaded function to sort an array of string values by sorting their indices
+void selectionSort(string arr[], int idx[], int size, bool ascending) {
+    for (int i = 0; i < size-1; i++){
+        int minIdx = i;
+        for (int j = 1; j < size; j++)
+        {
+            if (ascending)
+            {
+                if (arr[idx[j]] < arr[idx[minIdx]])
+                    minIdx = j;
+            }
+            else
+            {
+                if (arr[idx[j]] > arr[idx[minIdx]])
+                    minIdx = j;
+            }
+        }
+        swapInt(idx[i], idx[minIdx]);
+    }
+}

@@ -1,0 +1,6 @@
+DNA Sequence Analysis
+Total Nucleotides: 29782
+Adenine:    8892.00    (29.86%)
+Thymine:    9581.00    (32.17%)
+Cytosine:    5462.00    (18.34%)
+Guanine:    5847.00    (19.63%)

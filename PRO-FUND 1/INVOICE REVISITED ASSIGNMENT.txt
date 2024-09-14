@@ -1,0 +1,233 @@
+OUTPUT 1 (WITH TAX & TEST FOR ERROR MESSAGES):
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+4. Eggs
+5. Deodorant
+6. Juice
+7. Chips
+8. Forks
+9. Spoons
+10. Cups
+
+Please enter your choice: 0
+The valid choices are 1 through 10
+Please enter a valid choice: 11
+The valid choices are 1 through 10
+Please enter a valid choice: 10
+Please enter age: 60
+Please enter price: 5.95
+         INVOICE
+Cups:          $5.95
+Tax:           $0.48
+Discount:     -$0.30
+Total:         $6.13
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 2 (NO TAX):
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+4. Eggs
+5. Deodorant
+6. Juice
+7. Chips
+8. Forks
+9. Spoons
+10. Cups
+
+Please enter your choice: 4
+Please enter age: 22
+Please enter price: 33
+         INVOICE
+Eggs:          $33.00
+Tax:           $0.00
+Total:         $33.00
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 3 (WITH SENIOR DISCOUNT):
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+4. Eggs
+5. Deodorant
+6. Juice
+7. Chips
+8. Forks
+9. Spoons
+10. Cups
+
+Please enter your choice: 4
+Please enter age: 77
+Please enter price: 60
+         INVOICE
+Eggs:          $60.00
+Tax:           $0.00
+Discount:     -$3.00
+Total:         $57.00
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 4 (WITHOUT SENIOR DISCOUNT):
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+4. Eggs
+5. Deodorant
+6. Juice
+7. Chips
+8. Forks
+9. Spoons
+10. Cups
+
+Please enter your choice: 10
+Please enter age: 10
+Please enter price: 10
+         INVOICE
+Cups:          $10.00
+Tax:           $0.80
+Total:         $10.80
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+SOURCE CODE:
+// AFOLAMI KOREDE UMAR
+// INVOICE REVISITED
+// SECTION 902
+// 3/25/2023
+#include <iostream>
+#include <iomanip>
+#include <string>
+#include <cmath>
+using namespace std;
+
+// Global constants
+const int MIN_VALID_CHOICE = 1;
+const int MAX_VALID_CHOICE = 10;
+
+string choiceToItem(int choice) {
+    // mapping choices from 1 to 10 to their item
+    return choice == 1 ? "Bread" : choice == 2 ? "Milk" : choice == 3 ? "Soap" :
+    choice == 4 ? "Eggs" : choice == 5 ? "Deodorant" : choice == 6 ? "Juice" :
+    choice == 7 ? "Chips" : choice == 8 ? "Forks" : choice == 9 ? "Spoons" :
+    choice == 10 ? "Cups" : "Invalid Choice";
+}
+
+void outputLine(int choice) {
+    // Function for printing each line of the menu
+    cout << choice << ". " << choiceToItem(choice) << endl;
+}
+
+// function to display the menu
+void displayMenu() {
+    cout << "What would you like to buy?" << endl;
+    // loop each line from 1 to 10 using the outputLine function
+   for(int choice = MIN_VALID_CHOICE; choice <= MAX_VALID_CHOICE; ++choice) {
+        outputLine(choice);
+    }
+    cout << endl;
+}
+
+// function to accept and return integer values
+int getIntValue(string toInput) {
+    cout << "Please enter " << toInput;
+    int value;
+    cin >> value;
+    return value;
+}
+
+// function to test if a choice is taxable or not
+bool isTaxable(int choice) {
+    switch(choice) {
+        case 3:
+        case 5: 
+        case 8: 
+        case 9: 
+        case 10:
+        return true;
+        default: return false;
+    }
+}
+
+// function to accept and return double values
+double getDoubleValue(string toInput) {
+    cout << "Please enter " << toInput;
+    double value;
+    cin >> value;
+    return value;
+}
+
+
+int getValidChoice() {
+    // get a choice from the user
+    int choice = getIntValue("your choice: ");
+    // Respond to the user's menu selection.
+    while (choice < MIN_VALID_CHOICE || choice > MAX_VALID_CHOICE) {
+        // Output an error message.
+        cout << "The valid choices are " << MIN_VALID_CHOICE << " through " << MAX_VALID_CHOICE << endl;
+        choice = getIntValue("a valid choice: ");
+    }
+    return choice;
+}
+
+
+int main() {
+    // List of constants
+    const double TAX_RATE = 0.08;
+    const double DISCOUNT_RATE = 0.05;
+    const int PRECISION = 2;
+    
+    // display the menu
+    displayMenu();
+    
+    // Get the user's choice of item
+    int choice = getValidChoice();
+    
+    // Get the user's age
+    int age = getIntValue("age :");
+    
+    // Get the price of the chosen item
+    double price = getDoubleValue("price :");
+    
+    // compute tax if taxable
+    double tax = 0;
+    if (isTaxable(choice) == true) {
+        tax = price * TAX_RATE;
+    } else {
+        tax = 0;
+    }
+    
+    // Regulate output precision
+    cout << fixed << showpoint << setprecision(PRECISION);
+    
+    // Output results
+    cout<<"\t INVOICE" << endl; 
+    cout << choiceToItem(choice) << ": "<< setw(10) << right << "$" << price << endl;
+    cout<< setw(15) << left << "Tax: "  << "$" << tax << endl;
+    // compute discount if it applies
+    double discount = 0;
+    if (age >= 60) {
+        discount = price * DISCOUNT_RATE;
+        cout<< setw(14) << left << "Discount: "  << "-$" << discount << endl;
+    }
+    cout << setw(15) << left << "Total: "  << "$" << price + tax - discount << endl;
+    return 0;
+}

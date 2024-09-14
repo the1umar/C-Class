@@ -1,0 +1,118 @@
+OUTPUT:
+DNA Sequence Analysis
+Total Nucleotides: 29782
+Adenine:    8892.00    (29.86%)
+Thymine:    9581.00    (32.17%)
+Cytosine:    5462.00    (18.34%)
+Guanine:    5847.00    (19.63%)
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+SOURCE CODE:
+// DNA SEQUENCE ASSIGNMENT REVISITED
+// AFOLAMI KOREDE UMAR
+// SECTION 902
+// 4/8/2023
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+// List of function prototypes
+bool countNucleotides(int&, int&, int&, int&);
+void outputReport(ostream&, int, int, int, int);
+void outputNucleotide(ostream&, string, double, int);
+
+int main() {
+    int aGene, tGene, cGene, gGene;
+    
+    // Call countNucleotides to get the counts for each Nucleotide, display error if it didn't work
+    if (!countNucleotides(aGene, tGene, cGene, gGene)) {
+        cout << "Error counting Nucleotides" << endl;
+    }
+   
+   // Call outputReport and passes the necessary output stream and Nucleotides
+    outputReport(cout, aGene, tGene, cGene, gGene);
+    
+    // Create and open output file stream fout
+    ofstream fout;
+    fout.open("dnaReport.txt");
+    
+    // Test the success of the output file stream
+    if (!fout) {
+        cout << "Error: Unable to open output file" << endl;
+    } else {
+        // Pass the necessary output stream for file outputting
+        outputReport(fout, aGene, tGene, cGene, gGene);
+    }
+    
+    fout.close();
+    return 0;
+}
+
+bool countNucleotides(int& aGene, int& tGene, int& cGene, int& gGene) {
+    // Create and open file input stream
+    ifstream fin;
+    fin.open("dnaSequence.txt");
+    // Test if input stream opened successfully
+    if (!fin) {
+        cout << "Error: could not open file"<< endl;
+        return false;
+    } else {
+        aGene, tGene, cGene, gGene = 0;
+        // Count nucleotide characters
+        char nucleotide;
+        while (fin >> nucleotide) {
+            switch (nucleotide) {
+                case 'A':
+                    aGene++;
+                    break;
+                case 'T':
+                    tGene++;
+                    break;
+                case 'C':
+                    cGene++;
+                    break;
+                case 'G':
+                    gGene++;
+                    break;
+                default:
+                    // Display error message if invalid nucleotide is encountered
+                    cout << "Error: invalid nucleotide found in input file: " << nucleotide << endl;
+                    return false;
+            }
+        }
+    // CLose file    
+    fin.close();
+    return true;
+    }
+}
+
+void outputNucleotide(ostream& out, string nucleotide, double count, int total) {
+    const int LOWER_WIDTH = 5;
+    const int HIGHER_WIDTH = 10;
+    // Calculate percentages
+    double percent = count / total*100;
+    // Format output
+    out << left << showpoint;
+    // Output line
+    out << nucleotide << setw(LOWER_WIDTH) << ": " << setw(HIGHER_WIDTH) << count << " (" << fixed << setprecision(2) << percent << "%)" << endl;
+}
+
+void outputReport(ostream& out, int aGene, int tGene, int cGene, int gGene) {
+    int total = aGene + tGene + cGene + gGene;
+    
+    // Pass outputNucleotide it's required values for each parameter
+    out << "DNA Sequence Analysis" << endl << "Total Nucleotides: " << total << endl;
+    outputNucleotide(out, "Adenine", aGene, total);
+    outputNucleotide(out, "Thymine", tGene, total);
+    outputNucleotide(out, "Cytosine", cGene, total);
+    outputNucleotide(out, "Guanine", gGene, total);
+    
+}

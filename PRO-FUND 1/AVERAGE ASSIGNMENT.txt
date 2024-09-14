@@ -1,0 +1,77 @@
+FIRST RUN:
+Enter a number of values from 2 to 10: 1
+Invalid input!
+Enter a number of values from 2 to 10: 11
+Invalid input!
+Enter a number of values from 2 to 10: 6
+Enter value 1: 5
+Enter value 2: 8
+Enter value 3: 45
+Enter value 4: 11
+Enter value 5: 6
+Enter value 6: 1
+The average is 12.667
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+SECOND RUN:
+Enter a number of values from 2 to 10: 4
+Enter value 1: 41
+Enter value 2: 55
+Enter value 3: 12
+Enter value 4: 9
+The average is 29.250
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+SOURCE CODE:
+// COMPUTE AN AVERAGE OF INTEGER VALUES
+// AFOLAMI KOREDE UMAR
+// SECTION 902
+// 2/24/2023
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main() {
+    // Constants and Variables
+    const int PRECISION = 3;
+    double subtotal = 0;
+    int listing = 1;
+    
+    // Prompt to collect user input
+    cout << "Enter a number of values from 2 to 10: ";
+    double integerVal;
+    cin >> integerVal;
+    
+    // While-loop for input validation
+    while (integerVal < 2 || integerVal > 10) {
+        cout << "Invalid input!" << endl 
+             << "Enter a number of values from 2 to 10: ";
+        cin >> integerVal;
+    }
+    
+    // For-loop for computing the inputed number of integers, and their values
+    for (int i = 0; i < integerVal; ++i) {
+        cout << "Enter value " << listing++ << ": " ;
+        double value;
+        cin >> value;
+        subtotal += value;
+    }
+    
+    // Calculations for the final average to 3 decimal places
+    // and final print statement.
+    double average = subtotal/integerVal;
+    cout << fixed << setprecision(PRECISION);
+    cout << "The average is " << average;
+    
+
+    return 0;
+}

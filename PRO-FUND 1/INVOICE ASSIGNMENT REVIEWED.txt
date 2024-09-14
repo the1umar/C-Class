@@ -1,0 +1,153 @@
+OUTPUT 1
+
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+Please enter your choice: 1
+Please enter the price: $2.85
+Please enter your age: 22
+INVOICE
+Price:         $2.85
+Tax:           $0.00
+Total:         $2.85
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 2
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+Please enter your choice: 3
+Please enter the price: $1.65
+Please enter your age: 45
+INVOICE
+Price:         $1.65
+Tax:           $0.13
+Total:         $1.78
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 3
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+Please enter your choice: 2
+Please enter the price: $3.25
+Please enter your age: 60
+INVOICE
+Price:         $3.25
+Tax:           $0.00
+Discount:$-             0.16
+Total:$              3.09
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 4
+What would you like to buy?
+1. Bread
+2. Milk
+3. Soap
+Please enter your choice: 3
+Please enter the price: $1.65
+Please enter your age: 81
+INVOICE
+Price:         $1.65
+Tax:           $0.13
+Discount:$-             0.08
+Total:$              1.70
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+
+
+
+SOURCE CODE
+
+// AFOLAMI KOREDE UMAR
+// INVOICE ASSIGNMENT
+// SECTION 902
+// 2/11/2023
+
+#include <iostream>
+#include <cmath>
+#include <iomanip>
+using namespace std;
+
+int main(){
+    // Below are a list of my constants
+    const int MIN_CHOICE = 1;
+    const int MAX_CHOICE = 3;
+    const double DISCOUNT = 0.05;
+    const double TAX_RATE = 0.08;
+    const int CENT = 2;
+    const int WIDTH = 15;
+    
+    // Output prompt and options to the user
+    cout << "What would you like to buy?" << endl;
+    cout << "1. Bread" << endl << "2. Milk" << endl << "3. Soap" << endl;
+    
+    //Allow User to input choices
+    cout << "Please enter your choice: ";
+    int choice;
+    cin >> choice;
+    
+    // Create conditions for validity of choice, and continue user input
+    if (choice >= MIN_CHOICE && choice <= MAX_CHOICE) {
+                cout << "Please enter the price: $";
+        double price;
+        cin >> price;
+        
+        cout << "Please enter your age: ";
+        int age;
+        cin >> age;
+        
+        double total = 0;
+        double tax = 0;
+        
+        //Set precision for cent
+        cout << setprecision(CENT) << fixed << left;
+        cout << "INVOICE" << fixed << setw(WIDTH)  << endl;
+        cout << setw(WIDTH) << "Price:"  << "$" << price << endl;
+        
+        // Create conditions for whether tax is applied or not
+        if (choice == 3) {
+            tax +=  (price * TAX_RATE);
+            cout << setw(WIDTH) << "Tax:"  << "$" << tax << endl;
+        } else {
+            cout << setw(WIDTH) << "Tax:"   << "$" << tax  << endl;
+            
+        //Create condition for age, and whether discount is applied or not    
+        } if (age >= 60) {
+                double discountAmount = DISCOUNT * price;
+                total += price + tax - discountAmount;
+                cout << "Discount:" << setw(WIDTH) << "$-" << discountAmount 
+                << endl;
+                cout << "Total:" << setw(WIDTH) << "$" << total << endl;
+             } else {
+                 total += price + tax;
+                 cout << setw(WIDTH) << "Total:" << "$" << total << endl;
+             }
+        
+    } else {
+        cout << choice << " is invalid, choose from " << MIN_CHOICE << " to " 
+        << MAX_CHOICE << endl;
+
+    }
+    return 0;
+}

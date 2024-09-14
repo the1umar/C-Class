@@ -1,0 +1,65 @@
+RESULTING OUTPUT:
+
+Hello, please enter the price per lb ($): 18.50
+Buying option           1 lb    10 lbs  20 lbs
+Cost per day ($)        1.16    1.04    0.98
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+
+SOURCE CODE:
+
+// DAILY SUPPLEMENT COST
+// AFOLAMI KOREDE UMAR
+// SECTION 9O2
+// 2/3/23
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+int main(){
+    // Below are some constants I created during the course of writing the code
+    const int CENT_PRECISION = 2;
+    const int POSITIONING = 15;
+
+    // First, I created all my initial variables
+    const int BUYING_OPTION_1 = 1;
+    const int BUYING_OPTION_2 = 10;
+    const int BUYING_OPTION_3 = 20;
+    double pound;
+    double ounce = (16 * pound);
+    
+    // Next, I asked the user to enter a price per lb
+    cout << "Hello, please enter the price per lb ($): ";
+    double price;
+    cin >> price;
+    
+    // Next, I wrote the math for the discounted prices
+    double pricePer1Lb = price;
+    double pricePer10Lb = (BUYING_OPTION_2 * price) - (0.1 * (BUYING_OPTION_2 * price));
+    double pricePer20Lb = (BUYING_OPTION_3 * price) - (0.15 * (BUYING_OPTION_3 * price));
+    
+    // Next, I wrote the math for  cost per day for the different options
+    double costPerDay1Lb = price/16;
+    double costPerDay10Lb = pricePer10Lb/(10 * 16);
+    double costPerDay20Lb = pricePer20Lb/(20 * 16);
+    
+    // Next, I wrote the formatting for the number of points after the decimal
+    cout<< setprecision(CENT_PRECISION) << fixed << left;
+    
+    // Next, I wrote the expression for the output
+    // The lines are broken up because it would be too long in one straight line
+    cout << setw(POSITIONING) << "Buying option \t\t" << BUYING_OPTION_1 << " lb\t";
+    cout << BUYING_OPTION_2 << " lbs\t" << BUYING_OPTION_3 << " lbs" << endl;
+    cout << setw(POSITIONING) << "Cost per day ($) \t" << costPerDay1Lb << "\t"; 
+    cout << costPerDay10Lb << "\t" << costPerDay20Lb << endl;
+    
+    return 0;
+}
+
+

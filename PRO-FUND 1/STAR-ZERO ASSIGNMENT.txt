@@ -1,0 +1,101 @@
+SOURCE CODE
+// TABLE OF STARS AND ZEROES
+// AFOLAMI KOREDE UMAR
+// section 902
+// 3/4/2023
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    // NAMED CONSTANTS
+    const int MIN = 3;
+    const int MAX = 15;
+    
+    // PROMPT THE USER TO INPUT THE SIZE OF THEIR TABLE
+    cout <<"Enter an odd size from 3 to 15: ";
+    int size;
+    cin >> size;
+    
+    // SET UP YOUR WHILE STATEMENT TO CHECK VALIDITY OF INPUTED SIZE
+    while ((size%2) == 0 || size < MIN || size > MAX) {
+        cout << "error: ";
+        
+        if (size < MIN && size%2 == 0) {
+            cout << "that's even and less than the min!" << endl;
+        } 
+        
+        else if (size < MIN) {
+            cout << "that's less than the min!" << endl;
+        }
+        
+        else if (size > MAX && size%2 == 0) {
+            cout << "that's even and that's greater than the max!" << endl;
+        }
+        
+        else if (size > MAX) {
+            cout << "that's greater than the max!" << endl;
+        }
+        
+        else if (size%2 == 0) {
+            cout << "that's even!" << endl;
+        }
+        
+        cout << "enter a valid size: ";
+        cin >> size;
+        
+    }
+    
+    // FOR LOOP FOR THE MULTIPLE ITRATIONS OF THE LOOP
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+           cout << (i%2 == j%2 ? "* " : "0 ");
+        }
+        cout << endl;
+    }
+     
+    return 0;
+}
+
+
+
+OUTPUT 1
+Enter an odd size from 3 to 15: 10
+error: that's even!
+enter a valid size: 1
+error: that's less than the min!
+enter a valid size: 17
+error: that's greater than the max!
+enter a valid size: 2
+error: that's even and less than the min!
+enter a valid size: 16
+error: that's even and that's greater than the max!
+enter a valid size: 3
+* 0 * 
+0 * 0 
+* 0 * 
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+OUTPUT 2
+Enter an odd size from 3 to 15: 13
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+0 * 0 * 0 * 0 * 0 * 0 * 0 
+* 0 * 0 * 0 * 0 * 0 * 0 * 
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.

@@ -1,0 +1,94 @@
+// Best used for dynamic memory and allocates during the runtime rather than compiler
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+
+using namespace std;
+
+double* growArr (double* arr, int& size) {
+    const int INCREMENT = 20;
+    int newSize = size + INCREMENT;
+    double* newArr = new double[newSize];
+    
+    for (int i = 0; i < size; ++i) {
+        newArr[i] = arr[i];
+    }
+    if (arr != nullptr) { // NULL also works instead of nullptr and its to assign 0 to a pointer
+        delete[] arr;
+    }
+    size = newSize;
+    return newArr;
+}
+
+int main() {
+    const string DATA_FILE = "cityData.txt";
+    const int NUM_CITIES = 20;
+    const double SENTINEL = -1;
+    const int NAME_WIDTH = 25;
+    const int WIDTH = 10;
+    const int PRECISION = 1;
+    
+    ifstream fin;
+    fin.open(DATA_FILE);
+    
+    if (!fin) {
+        cout << "Error opening " << DATA_FILE << endl;
+    } else {
+        string cityName[NUM_CITIES];
+        int size[NUM_CITIES];
+        double* salary[NUM_CITIES];
+        int numRead[NUM_CITIES];
+        
+        
+        int numCitiesRead = 0;
+        for (int city; city < NUM_CITIES; ++city) {
+            if (!getline(fin, cityName[city])) {
+                break;                
+            }
+            size[city] = 0;
+            numRead[city] = 0;
+            salary[city] = nullptr; 
+            
+            for (double sal = 0; fin >> sal && sal != SENTINEL; ++numRead[city]) {
+                if (numRead[city] == size[city]) {
+                    salary[city] = growArr(salary[city], size[city]);
+                }
+                salary[city][numRead[city]] = sal;
+            }
+            if (!fin) {
+                cout << "ERROR: " << cityName[city] << " has invalid data" << endl;
+                break;
+            }
+            fin.ignore();
+            numCitiesRead++;
+        }
+        fin.close();
+        cout << left << setprecision(PRECISION) << fixed;
+        cout << setw(NAME_WIDTH) << "City"
+             << setw(WIDTH) << "Points"
+             << setw(WIDTH) << "Min"
+             << setw(WIDTH) << "Max"
+             << setw(WIDTH) << "Average" << endl << endl;
+             
+        for (int city = 0; city < numCitiesRead; ++city) {
+            if (numRead[city]) {
+                double min = salary[city][0];
+                double max = salary[city][0];
+                double total = salary[city][0];
+                for (int i = 0; i < numRead[city]; ++i) {
+                    min = salary[city][i] < min ? salary[city][i] : min;
+                    max = salary[city][i] > max ? salary[city][i] : max;
+                    total += salary[city][i];
+                }
+                
+                cout << setw(NAME_WIDTH) << cityName[city]
+                     << setw(WIDTH) << numRead[city]
+                     << setw(WIDTH) << min
+                     << setw(WIDTH) << max
+                     << setw(WIDTH) << total/numRead[city] << endl;
+            }
+            delete[] salary[city];
+        }
+    }
+    return 0;
+}

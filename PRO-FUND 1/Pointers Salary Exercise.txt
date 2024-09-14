@@ -1,0 +1,72 @@
+// This program reads an unkown number of double values
+// representing CS professional salaries from a file into
+// a dynamicly allocated array, and computes the minimum,
+// the maximum, and the average. The array grows as needed.
+// The data are made up.
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+using namespace std;
+
+// In this function parameter, we use int& because we change the value of size,
+// so we must pass it by reference.
+double* growArr(double* arr, int& size) {
+    const int INCREMENT = 20;
+    // Grow the array
+    int newSize = size + INCREMENT;
+    double* newArr = new double[newSize];
+    // Transfer elements from old array to new array
+    for (int i = 0; i < size; ++i) {
+        newArr[i] = arr[i];
+    }
+    if (arr != nullptr) {
+        // After transferring, delete the old one, and let salary point to the new array
+        delete[] arr;
+    }
+    size = newSize;
+    return newArr;
+}
+
+int main() {
+    const string DATA_FILE = "salaryData.txt";
+    
+    ifstream fin;
+    fin.open(DATA_FILE);
+    
+    if (!fin) {
+        cout << "Error opening " << DATA_FILE << " for input";
+    } else {
+        int size = 0;
+        double* salary = nullptr;
+        
+        int numRead = 0;
+        
+        for (double sal = 0; fin >> sal; numRead++) {
+            if (numRead >= size) {
+                salary = growArr(salary, size);
+            }
+            salary[numRead] = sal;
+        }
+        fin.close();
+        
+        if (numRead) {
+            double min = salary[0];
+            double max = salary[0];
+            double total = salary[0];
+            for (int i = 1; i < numRead; ++i) {
+                min = salary[i] < min ? salary[i] : min;
+                max = salary[i] > max ? salary[i] : max;
+                total += salary[i];
+            }
+            
+            cout <<  "Out of " << numRead << " data points: "
+                 << "min = " << min
+                 << ", max = " << max
+                 << ", average = " << total/numRead << endl;
+        }
+        delete[] salary;
+    }
+
+    return 0;
+}

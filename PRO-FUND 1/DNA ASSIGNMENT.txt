@@ -1,0 +1,103 @@
+OUTPUT
+DNA sequence analysis:
+29782 nucleotides in the sequence
+Sequence breakdown:
+Adenine: 8892 29.86%
+Thymine: 9581 32.17%
+Cytosine: 5462 18.34%
+Guanine: 5847 19.63%
+
+
+...Program finished with exit code 0
+Press ENTER to exit console.
+
+
+
+
+
+
+
+
+
+SOURCE CODE
+// DNA SEQUENCE ASSIGNMENT
+// AFOLAMI KOREDE UMAR
+// SECTION 902
+// 3/18/2023
+
+#include <iostream>
+#include <fstream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+int main() {
+    // List of my variables
+    int aGene = 0;
+    int tGene = 0;
+    int cGene = 0;
+    int gGene = 0;
+    char nucleotide;
+    const int PRECISION = 2;
+    // Open input file
+    ifstream fin;
+    fin.open("dnaSequence.txt");
+    
+    // Create error message.
+    if (!(fin)) {
+        cout << "Error! Unable to open input file." << endl;
+    }
+
+    // Read nucleotides and calculate counts, also created error message for encountering invalid nucleotide
+    while (fin >> nucleotide) {
+        switch (nucleotide) {
+            case 'A':
+                aGene++;
+                break;
+            case 'T':
+                tGene++;
+                break;
+            case 'C':
+                cGene++;
+                break;
+            case 'G':
+                gGene++;
+                break;
+            default:
+                cout << "Invalid nucleotide '" << nucleotide << "' encountered. Will now skip." << endl;
+        }
+    }
+
+    // Calculate total number of nucleotides
+    int totalNucleotides = aGene + tGene + cGene + gGene;
+
+    // Close input file
+    fin.close();
+
+    // Display report
+    cout << "DNA sequence analysis:" << endl;
+    cout << totalNucleotides << " nucleotides in the sequence" << endl;
+    cout << "Sequence breakdown:" << endl;
+    cout << "Adenine: " << aGene << " " << fixed << setprecision(PRECISION) << (100.0 * aGene / totalNucleotides) << "%" << endl;
+    cout << "Thymine: " << tGene << " " << fixed << setprecision(PRECISION) << (100.0 * tGene / totalNucleotides) << "%" << endl;
+    cout << "Cytosine: " << cGene << " " << fixed << setprecision(PRECISION) << (100.0 * cGene / totalNucleotides) << "%" << endl;
+    cout << "Guanine: " << gGene << " " << fixed << setprecision(PRECISION) << (100.0 * gGene / totalNucleotides) << "%" << endl;
+
+    // Open output file
+    ofstream fout;
+    fout.open("dnaReport.txt");
+    if (!(fout)) {
+        cout << "Error: Unable to open output file." << endl;
+    }
+
+    // Write report to output file
+    fout << "DNA sequence analysis:" << endl;
+    fout << totalNucleotides << " nucleotides in the sequence" << endl;
+    fout << "Sequence breakdown:" << endl;
+    fout << "Adenine: " << aGene << " " << fixed << setprecision(PRECISION) << ((100.0 * aGene) / totalNucleotides) << "%" << endl;
+    fout << "Thymine: " << tGene << " " << fixed << setprecision(PRECISION) << ((100.0 * tGene) / totalNucleotides) << "%" << endl;
+    fout << "Cytosine: " << cGene << " " << fixed << setprecision(PRECISION) << ((100.0 * cGene)/ totalNucleotides) << "%" << endl;
+    fout << "Guanine: " << gGene << " " << fixed << setprecision(PRECISION) << ((100.0 * gGene)/ totalNucleotides) << "%" << endl;
+    
+    return 0;
+}
